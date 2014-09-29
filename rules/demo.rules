@@ -56,47 +56,6 @@ rule "Volume control"
 		postUpdate(Volume, masterVolume * 100)
 end
 
-/**
- * The following rules help initializing the demo items with some helpful states.
- */
-rule "Initialize light states"
-	when
-		System started
-	then
-		Lights?.members.forEach(light|
-			postUpdate(light, if(Math::random > 0.7) ON else OFF)
-		)
-end
-
-rule "Initialize heating states"
-	when 
-		System started
-	then
-		Heating?.members.forEach(heating|
-			postUpdate(heating, if(Math::random > 0.8) ON else OFF)
-		)
-		postUpdate(Temperature_Setpoint, 22)
-end
-
-rule "Initialize contact states"
-	when 
-		System started
-	then
-		Windows?.members.forEach(window|
-			postUpdate(window, if(Math::random > 0.5) OPEN else CLOSED)
-		)
-end
-
-rule "Set random room temperatures"
-	when 
-		System started or
-		Time cron "0 0/5 * * * ?"
-	then
-		Temperature?.members.forEach(temperature|
-			postUpdate(temperature, 20.0 + (25.0 - (Math::random * 50.0).intValue) / 10.0)
-		)
-end
-
 rule "Update max and min temperatures"
 when
 	Item Weather_Temperature changed or
@@ -105,29 +64,6 @@ when
 then	
 	postUpdate(Weather_Temp_Max, Weather_Temperature.maximumSince(now.toDateMidnight).state)
 	postUpdate(Weather_Temp_Min, Weather_Temperature.minimumSince(now.toDateMidnight).state)
-end
-
-/** shows how to use sensor values from the past */
-rule "Persistence Demo"
-when
-	Time cron "0 * * * * ?"
-then	
-	if(Weather_Temperature.changedSince(now.minusMinutes(1))) {
-		println("2 minutes ago, the temperature was " + Weather_Temperature.historicState(now.minusMinutes(2)) + " degrees.")		
-	}
-end
-
-/** 
- * shows how to check recent switch states - very helpful to avoid executing something too often, just
- * because somebody presses a button too often (e.g. sending a notification, if the doorbell button is pressed)
- */
-rule "Persistence Demo 2"
-when
-	Item DemoSwitch received command
-then
-	if(!DemoSwitch.changedSince(now.minusSeconds(5))) {
-		logInfo("Persistence Demo", "You did not press this button during the last 5 seconds!")
-	}
 end
 
 rule "Timer Demo"
