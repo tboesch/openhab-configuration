@@ -15,7 +15,7 @@ Group:Number:AVG 				Temperature	"Avg. Room Temperature [%.1f °C]" 	<temperatur
 
 /* Lights */
 Switch Light_GF_Living_Table 		"Table" 		(GF_Living, Lights)
-Switch Light_GF_Living_Ceiling 	    "Ceiling" 		(GF_Living, Lights)
+Switch Light_GF_Living_Ceiling 	    "Ceiling" 		(GF_Living, Lights)     {enocean="{id=00:29:CC:15, eep=F6:02:01, channel=B, parameter=ON}"}
 
 /* Indoor Temperatures */
 /* Number Temperature_GF_Corridor 	"Temperature [%.1f °C]"	<temperature>	(Temperature, GF_Corridor) */
