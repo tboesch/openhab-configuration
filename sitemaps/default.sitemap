@@ -1,0 +1,98 @@
+sitemap default label="Hauptmenu"
+{
+	Frame {
+		Group item=gGF label="Erdgeschoss" icon="groundfloor"
+		Text item=EO_018BF34A_TEMP valuecolor=[EO_018BF34A_TEMP=="Uninitialized"="lightgray",EO_018BF34A_TEMP>25="red",>22="orange",>18="green",>5="black",<=5="blue"] {
+			Frame {
+				Switch item=Weather_Chart_Period label="Chart Period" mappings=[0="Stunde", 1="Tag", 2="Woche"]
+				Chart item=EO_018BF34A_TEMP period=h refresh=600 visibility=[Weather_Chart_Period==0]
+				Chart item=EO_018BF34A_TEMP period=D refresh=3600 visibility=[Weather_Chart_Period==1, Weather_Chart_Period=="Uninitialized"]
+				Chart item=EO_018BF34A_TEMP period=W refresh=3600 visibility=[Weather_Chart_Period==2]
+			}
+		}
+		Text item=EO_018BF34A_HUM {
+			Frame {
+				Switch item=Weather_Chart_Period label="Chart Period" mappings=[0="Stunde", 1="Tag", 2="Woche"]
+				Chart item=EO_018BF34A_HUM period=h refresh=600 visibility=[Weather_Chart_Period==0]
+				Chart item=EO_018BF34A_HUM period=D refresh=3600 visibility=[Weather_Chart_Period==1, Weather_Chart_Period=="Uninitialized"]
+				Chart item=EO_018BF34A_HUM period=W refresh=3600 visibility=[Weather_Chart_Period==2]
+			}
+		}
+		Switch item=EO_0186BBDA_ON
+		Switch item=gGF_Lights mappings=[OFF="Alle Aus"]
+	}
+
+	Frame {
+		Group item=gC label="Keller" icon="cellar"
+		Text item=EO_0006C681_TEMP valuecolor=[EO_0006C681_TEMP=="Uninitialized"="lightgray",EO_0006C681_TEMP>35="red",>29="orange",>15="green",>5="black",<=5="blue"] {
+			Frame {
+				Switch item=Weather_Chart_Period label="Chart Period" mappings=[0="Stunde", 1="Tag", 2="Woche"]
+				Chart item=EO_0006C681_TEMP period=h refresh=600 visibility=[Weather_Chart_Period==0]
+				Chart item=EO_0006C681_TEMP period=D refresh=3600 visibility=[Weather_Chart_Period==1, Weather_Chart_Period=="Uninitialized"]
+				Chart item=EO_0006C681_TEMP period=W refresh=3600 visibility=[Weather_Chart_Period==2]
+			}
+		}
+	}
+		
+	Frame label="Wetter" {
+		Text item=EO_01005EA8_TEMP valuecolor=[EO_01005EA8_TEMP=="Uninitialized"="lightgray",EO_01005EA8_TEMP>29="red",>25="orange",>15="green",>5="black",<=5="blue"] {
+			Frame {
+				Switch item=Weather_Chart_Period label="Chart Period" mappings=[0="Stunde", 1="Tag", 2="Woche"]
+				Chart item=EO_01005EA8_TEMP period=h refresh=600 visibility=[Weather_Chart_Period==0]
+				Chart item=EO_01005EA8_TEMP period=D refresh=3600 visibility=[Weather_Chart_Period==1, Weather_Chart_Period=="Uninitialized"]
+				Chart item=EO_01005EA8_TEMP period=W refresh=3600 visibility=[Weather_Chart_Period==2]
+			}
+		}
+		Text item=EO_01005EA8_HUM {
+			Frame {
+				Switch item=Weather_Chart_Period label="Chart Period" mappings=[0="Stunde", 1="Tag", 2="Woche"]
+				Chart item=EO_01005EA8_HUM period=h refresh=600 visibility=[Weather_Chart_Period==0]
+				Chart item=EO_01005EA8_HUM period=D refresh=3600 visibility=[Weather_Chart_Period==1, Weather_Chart_Period=="Uninitialized"]
+				Chart item=EO_01005EA8_HUM period=W refresh=3600 visibility=[Weather_Chart_Period==2]
+			}
+		}
+		Text item=EO_01007269_LUM {
+			Frame {
+				Switch item=Weather_Chart_Period label="Chart Period" mappings=[0="Stunde", 1="Tag", 2="Woche"]
+				Chart item=EO_01007269_LUM period=h refresh=600 visibility=[Weather_Chart_Period==0]
+				Chart item=EO_01007269_LUM period=D refresh=3600 visibility=[Weather_Chart_Period==1, Weather_Chart_Period=="Uninitialized"]
+				Chart item=EO_01007269_LUM period=W refresh=3600 visibility=[Weather_Chart_Period==2]
+			}
+		}
+		Text item=Weather_Temperature valuecolor=[Weather_Temperature=="Uninitialized"="lightgray",Weather_Temperature>29="red",>25="orange",>15="green",>5="black",<=5="blue"] {
+			Frame {
+				Text item=Weather_Temp_Max
+				Text item=Weather_Temp_Min
+				Text item=Weather_LastUpdate valuecolor=[Weather_LastUpdate>120="orange", Weather_LastUpdate>300="red"]
+			}
+			Frame {
+				Switch item=Weather_Chart_Period label="Chart Period" mappings=[0="Stunde", 1="Tag", 2="Woche"]
+				Chart item=Weather_Chart period=h refresh=600 visibility=[Weather_Chart_Period==0]
+				Chart item=Weather_Chart period=D refresh=3600 visibility=[Weather_Chart_Period==1, Weather_Chart_Period=="Uninitialized"]
+				Chart item=Weather_Chart period=W refresh=3600 visibility=[Weather_Chart_Period==2]
+			}
+		}
+	}
+
+	Frame label="Demo" {
+		Text label="Group Demo" icon="firstfloor" {
+			Switch item=Lights mappings=[OFF="All Off"]
+			Text item=Temperature
+		}
+		Text label="Widget Overview" icon="chart" {
+			Frame label="Binary Widgets" {
+				Switch item=DemoSwitch label="Toggle Switch"
+			}
+			Frame label="Discrete Widgets" {
+				Selection item=Scene_General label="Scene Selection" mappings=[0=off, 1=TV, 2=Dinner, 3=Reading]
+				Switch item=Scene_General label="Scene" mappings=[1=TV, 2=Dinner, 3=Reading]
+			}
+		}
+		Text label="Multimedia" icon="video" {
+			Frame label="Radio Control" {
+				Selection item=Radio_Station mappings=[0=off, 1=HR3, 2=SWR3, 3=FFH]
+				Slider item=Volume
+			}
+		}
+	}
+}
