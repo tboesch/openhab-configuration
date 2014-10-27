@@ -1,45 +1,99 @@
-Group All
-Group gGF 		(All)
-Group gFF 		(All)
+Group						All
+
+Group						Lights_All																(All)
+Group						Energy_All																(All)
+Group 						Power_All																(All)
+Group						Temperatur_All															(All)
+Group						Temperatur_Inside_All													(Temperatur_All)
+Group						Temperatur_Outside_All													(Temperatur_All)
+Group						Humidity_All															(All)
+Group						Illuminance_All															(All)
+Group						Weather																	(All)
+
+
+
+
+/* Alle Geräte im Erdgeschoss */
+
+Group						gGF					"Erdgeschoss"										(All)
+Group:Switch:OR(ON, OFF)	gGF_Lights			"Alle Lichter im Erdgeschoss [(%d)]"				(Lights_All)
+
+
+/* Alle Geräte im Erdgeschoss -> Küche */
+
+Group						GF_Kitchen			"Küche"								<kitchen>		(gGF)
+Group:Switch:OR(ON, OFF)	GF_Kitchen_Lights	"Alle Lichter in der Küche [(%d)]"					(gGF_Lights)
+
+Switch						EO_FFE12480_ON		"Tischlampe"										(GF_Kitchen_Lights, GF_Kitchen)		{aleoncean="LOCALID=FF:8E:85:00,REMOTEID=FF:E1:24:80,TYPE=RD_D2-01-08,PARAMETER=SWITCH"}
+Number						EO_FFE12480_ENERGY														(Energy_All)						{aleoncean="LOCALID=FF:8E:85:00,REMOTEID=FF:E1:24:80,TYPE=RD_D2-01-08,PARAMETER=ENERGY_WS"}
+Number						EO_FFE12480_POWER														(Power_All)							{aleoncean="LOCALID=FF:8E:85:00,REMOTEID=FF:E1:24:80,TYPE=RD_D2-01-08,PARAMETER=POWER_W"}
+
+
+/* Alle Geräte im Erdgeschoss -> Wohnzimmer */
+
+Group						GF_Living			"Wohnzimmer"						<sofa>			(gGF)
+Group:Switch:OR(ON, OFF)	GF_Living_Lights	"Alle Lichter im Wohnzimmer [(%d)]"					(gGF_Lights)
+
+Switch						EO_0186BBDA_ON		"Steh-Lampe beim Sofa"								(GF_Living_Lights, GF_Living)		{aleoncean="LOCALID=FF:8E:85:00,REMOTEID=01:86:BB:DA,TYPE=RD_D2-01-08,PARAMETER=SWITCH"}
+Number						EO_0186BBDA_ENERGY														(Energy_All)						{aleoncean="LOCALID=FF:8E:85:00,REMOTEID=01:86:BB:DA,TYPE=RD_D2-01-08,PARAMETER=ENERGY_WS"}
+Number						EO_0186BBDA_POWER														(Power_All)							{aleoncean="LOCALID=FF:8E:85:00,REMOTEID=01:86:BB:DA,TYPE=RD_D2-01-08,PARAMETER=POWER_W"}
+
+Number						EO_018BF34A_TEMP	"Temperatur EG [%.1f °C]"			<temperature>	(Temperatur_Inside_All, gGF)		{aleoncean="REMOTEID=01:8B:F3:4A,TYPE=RD_A5-04-02,PARAMETER=TEMPERATURE_CELSIUS"}
+Number						EO_018BF34A_HUM		"Feuchtigkeit EG [%.1f %%]"			<house>			(Humidity_All, gGF)					{aleoncean="REMOTEID=01:8B:F3:4A,TYPE=RD_A5-04-02,PARAMETER=HUMIDITY_PERCENT"}
+
+
+
+
+/* Alle Geräte im Keller */
+
+Group						gC 																		(All)
+Number						EO_0006C681_TEMP	"Heizung Vorlauf [%.1f °C]"			<temperature>	(Temperatur_All, gC)				{aleoncean="REMOTEID=00:06:C6:81,TYPE=RD_A5-02-17,PARAMETER=TEMPERATURE_CELSIUS"}
+
+
+
+
+/* Alle Geräte Draussen */
+
+Group						Outdoor																	(Temperatur_All)
+
+Number						EO_01005EA8_TEMP	"Temperatur Aussen [%.1f °C]"		<temperature>	(Temperatur_Outside_All, Outdoor)	{aleoncean="REMOTEID=01:00:5E:A8,TYPE=RD_A5-04-02,PARAMETER=TEMPERATURE_CELSIUS"}
+Number						EO_01005EA8_HUM		"Feuchtigkeit Aussen [%.1f %%]"		<garden>		(Humidity_All)						{aleoncean="REMOTEID=01:00:5E:A8,TYPE=RD_A5-04-02,PARAMETER=HUMIDITY_PERCENT"}
+Number						EO_01007269_LUM		"Helligkeit Aussen [%.1f lx]"		<garden>		(Illuminance_All)					{aleoncean="REMOTEID=01:00:72:69,TYPE=RD_A5-06-01_EltakoFAH60,PARAMETER=ILLUMINATION_LUX"}
+
+
+
+/* Geräte im Internet */
+
+Group						Weather_Chart															(Weather)
+Number						Weather_Temperature	"Teufen Yahoo [%.1f °C]"			<temperature>	(Weather_Chart)						{ http="<[http://weather.yahooapis.com/forecastrss?w=784382&u=c:60000:XSLT(yahoo_weather_temperature.xsl)]" }
+Number						Weather_Temp_Max	"Maximum Heute [%.1f °C]"			<temperature>	(Weather_Chart)
+Number						Weather_Temp_Min	"Minimum Heute [%.1f °C]"			<temperature>	(Weather_Chart)
+Number						Weather_Chart_Period	"Periode"
+DateTime					Weather_LastUpdate	"Letztes Update [%1$ta %1$tR]"		<clock>
+
+/* NTP binding demo item */
+/* DateTime					Date				"Date [%1$tA, %1$td.%1$tm.%1$tY]"	<calendar>											{ ntp="Europe/Berlin:de_DE" } */
+
+
+
+
+
+
+
+
+
+
 Group gC 		(All)
-Group Outdoor 	(All)
+Group gFF 		(All)
+Group gTF 		(All)
+Group gA 		(All)
 Group Shutters 	(All)
 Group Weather 	(All)
 Group Status 	(All)
 
-Group GF_Living 	"Living Room" 	<video> 	(gGF)
+
 
 /* active groups */
-Group:Switch:OR(ON, OFF) 		Lights 		"All Lights [(%d)]" 								(All)
-Group:Number:AVG 				Temperature	"Avg. Room Temperature [%.1f °C]" 	<temperature>	(Status)
+/* Group:Number:AVG 				Temperature	"Avg. Room Temperature [%.1f °C]" 	<temperature>	(Status) */
 
-/* Lights */
-Switch Light_GF_Living_Table 		"Table" 		(GF_Living, Lights)
-Switch Light_GF_Living_Ceiling 	    "Ceiling" 		(GF_Living, Lights)     {enocean="{id=00:29:CC:15, eep=F6:02:01, channel=B, parameter=ON}"}
 
-/* Indoor Temperatures */
-/* Number Temperature_GF_Corridor 	"Temperature [%.1f °C]"	<temperature>	(Temperature, GF_Corridor) */
-
-Group Weather_Chart													(Weather)
-Number Weather_Temperature 		"Outside Temperature [%.1f °C]"	<temperature> (Weather_Chart) { http="<[http://weather.yahooapis.com/forecastrss?w=784382&u=c:60000:XSLT(yahoo_weather_temperature.xsl)]" }
-Number Weather_Temp_Max 		"Todays Maximum [%.1f °C]"	<temperature> (Weather_Chart)
-Number Weather_Temp_Min 		"Todays Minimum [%.1f °C]"	<temperature> (Weather_Chart)
-Number Weather_Chart_Period		"Chart Period"
-DateTime Weather_LastUpdate		"Last Update [%1$ta %1$tR]"	<clock>
-
-/* NTP binding demo item */
-DateTime		Date			"Date [%1$tA, %1$td.%1$tm.%1$tY]"	<calendar>	{ ntp="Europe/Berlin:de_DE" }
-
-/* Demo items */
-Switch DemoSwitch				"Switch"
-Dimmer DimmedLight				"Dimmer [%d %%]"		<slider>
-Color  RGBLight					"RGB Light"				<slider>
-Rollershutter DemoShutter	 	"Roller Shutter"
-Dimmer DemoBlinds			 	"Blinds [%d %%]"		<rollershutter>
-Number Scene_General			"Scene"					<sofa>
-Number Radio_Station			"Radio"					<network>
-Dimmer Volume 					"Volume [%.1f %%]"
-Number Temperature_Setpoint		"Temperature [%.1f °C]" <temperature>
-
-String UnknownDevices    "Unknown Devices in Range: [%s]" { bluetooth="?" }
-Number NoOfPairedDevices "Paired Devices in Range: [%d]"  { bluetooth="!" }
